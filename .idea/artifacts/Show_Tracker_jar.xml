@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Show Tracker:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Show_Tracker_jar</output-path>
+    <root id="archive" name="Show Tracker.jar">
+      <element id="module-output" name="Show Tracker" />
+      <element id="library" level="application" name="Python 3.9 interpreter library" />
+    </root>
+  </artifact>
+</component>
