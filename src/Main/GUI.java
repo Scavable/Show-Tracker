@@ -68,6 +68,10 @@ public class GUI {
         panelInfo.setName("Info");
         searchBar.setName("Search Bar");
         table.setName("Shows Table");
+        saveButton.setName("Save Button");
+        cancelButton.setName("Cancel Button");
+        deleteButton.setName("Delete Button");
+        addButton.setName("Add Button");
 
         frameBehavior();
         panelListBehavior();
@@ -92,6 +96,7 @@ public class GUI {
         addToFrame();
         addToPanelList();
         addToPanelInfo();
+
         showInfoArrayList = showsFile.readFile();
         for (ShowInfo show : showInfoArrayList) {
             addShowToTable(show);
@@ -135,6 +140,7 @@ public class GUI {
                 showsFile.writeToFile(showInfoArrayList);
             }
         });
+
     }
 
     private void panelInfoBehavior() {
@@ -150,6 +156,7 @@ public class GUI {
         searchBar.setPreferredSize(new Dimension((int) panelList.getPreferredSize().getWidth() - 2, (int) (panelList.getPreferredSize().getHeight() * 0.05)));
 
         searchBar.addFocusListener(new FocusAdapter() {
+
             @Override
             public void focusGained(FocusEvent e) {
                 searchBar.selectAll();
@@ -157,13 +164,19 @@ public class GUI {
                     @Override
                     public void keyReleased(KeyEvent e) {
                         if(searchBar.getText().isBlank()){
-                            searchBar.setText("Search");
                             sorter.setRowFilter(null);
                         }else{
                             sorter.setRowFilter(RowFilter.regexFilter(searchBar.getText()));
                         }
                     }
                 });
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if(searchBar.getText().isBlank()){
+                    searchBar.setText("Search");
+                }
             }
         });
     }
@@ -329,11 +342,15 @@ public class GUI {
     private void saveButtonBehavior() {
         saveButton.setPreferredSize(new Dimension((int) panelInfo.getPreferredSize().getWidth() / 6, (int) panelInfo.getPreferredSize().getHeight() / 12));
         saveButton.addActionListener(e -> {
-            ShowInfo show = showInfoArrayList.get(table.getSelectedRow());
-            show.title = titleField.getText();
-            show.season = Integer.parseInt(seasonField.getText());
-            show.episode = Integer.parseInt(episodeField.getText());
-            table.updateUI();
+            if(model.getRowCount() != 0){
+                if(table.getSelectedRow() != -1){
+                    ShowInfo show = showInfoArrayList.get(table.getSelectedRow());
+                    show.title = titleField.getText();
+                    show.season = Integer.parseInt(seasonField.getText());
+                    show.episode = Integer.parseInt(episodeField.getText());
+                    table.updateUI();
+                }
+            }
         });
     }
 
@@ -376,6 +393,7 @@ public class GUI {
             showInfoArrayList.add(show);
             int size = showInfoArrayList.size();
             model.addRow(new ShowInfo[]{showInfoArrayList.get(size - 1)});
+            table.changeSelection(model.getRowCount() - 1, 1, false, false);
         });
     }
 
