@@ -6,7 +6,6 @@ import Files.ShowsFile;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.*;
@@ -185,9 +184,7 @@ public class GUI {
         table.setBorder(new LineBorder(Color.BLACK));
 
         selectionModel.addListSelectionListener(e -> {
-            if (table.getSelectedRow() == -1) {
-
-            } else {
+            if (table.getSelectedRow() != -1) {
                 ShowInfo show = (ShowInfo) model.getValueAt(table.getSelectedRow(), 0);
                 titleField.setText(show.title);
                 seasonField.setText(String.valueOf(show.season));
@@ -415,11 +412,8 @@ public class GUI {
         panelList.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
-        //c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 0;
-        //c.weightx = 1;
-        //c.weighty = 0.025;
         panelList.add(searchBar, c);
 
         c.fill = GridBagConstraints.BOTH;
