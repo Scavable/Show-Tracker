@@ -1,6 +1,5 @@
 package Main;
 
-import Files.SettingsFile;
 import Files.ShowsFile;
 
 import javax.swing.*;
@@ -18,6 +17,7 @@ public class GUI {
     }
 
     FrameBehavior frameBehavior;
+    ButtonBehaviors buttons;
     private final JPanel panelList = new JPanel();
     private final JPanel panelInfo = new JPanel();
 
@@ -29,22 +29,18 @@ public class GUI {
     ListSelectionModel selectionModel = table.getSelectionModel();
     TableRowSorter<DefaultTableModel> sorter;
 
-    JLabel titleLabel = new JLabel("Title");
-    JLabel seasonLabel = new JLabel("Season");
-    JLabel episodeLabel = new JLabel("Episode");
-    JTextField titleField = new JTextField("Title");
-    JTextField seasonField = new JTextField("Season");
-    JTextField episodeField = new JTextField("Episode");
-    JButton seasonPlusButton = new JButton("+");
-    JButton seasonMinusButton = new JButton("-");
-    JButton episodePlusButton = new JButton("+");
-    JButton episodeMinusButton = new JButton("-");
-    JButton saveButton = new JButton("Save");
-    JButton cancelButton = new JButton("Cancel");
-    JButton deleteButton = new JButton("Delete");
-    JButton addButton = new JButton("Add");
+    public JLabel titleLabel = new JLabel("Title");
+    public JLabel seasonLabel = new JLabel("Season");
+    public JLabel episodeLabel = new JLabel("Episode");
+    public JTextField titleField = new JTextField("Title");
+    public JTextField seasonField = new JTextField("Season");
+    public JTextField episodeField = new JTextField("Episode");
 
     GUI() {
+        //Populate shows array
+        showInfoArrayList = ShowsFile.readFile();
+
+        //JTable stuff
         model = new DefaultTableModel(0, 1) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -56,20 +52,19 @@ public class GUI {
         table.setModel(model);
         sorter = new TableRowSorter<>(model);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
         table.setRowSorter(sorter);
+
+        //Set names
         panelList.setName("List");
         panelInfo.setName("Info");
         searchBar.setName("Search Bar");
         table.setName("Shows Table");
-        saveButton.setName("Save Button");
-        cancelButton.setName("Cancel Button");
-        deleteButton.setName("Delete Button");
-        addButton.setName("Add Button");
 
+        //Behaviors/init
         frameBehavior = new FrameBehavior();
         panelListBehavior();
         panelInfoBehavior();
+        buttons = new ButtonBehaviors(titleField, seasonField, episodeField, panelInfo, table, model, showInfoArrayList);
         searchBarBehavior();
         showsTableBehavior();
         titleLabelBehavior();
@@ -78,20 +73,11 @@ public class GUI {
         seasonFieldBehavior();
         episodeLabelBehavior();
         episodeFieldBehavior();
-        seasonPlusButtonBehavior();
-        seasonMinusButtonBehavior();
-        episodePlusButtonBehavior();
-        episodeMinusButtonBehavior();
-        saveButtonBehavior();
-        cancelButtonBehavior();
-        deleteButtonBehavior();
-        addButtonBehavior();
 
         frameBehavior.addToFrame(panelList, panelInfo);
         addToPanelList();
         addToPanelInfo();
 
-        showInfoArrayList = ShowsFile.readFile();
         for (ShowInfo show : showInfoArrayList) {
             addShowToTable(show);
         }
@@ -249,107 +235,7 @@ public class GUI {
         });
     }
 
-    private void seasonPlusButtonBehavior() {
-        seasonPlusButton.addActionListener(e -> {
-            if (seasonField.getText().matches("[0-9]+")) {
-                int season = Integer.parseInt(seasonField.getText());
-                season = season + 1;
-                seasonField.setText(String.valueOf(season));
-            }
-        });
-    }
 
-    private void seasonMinusButtonBehavior() {
-        seasonMinusButton.addActionListener(e -> {
-            if (seasonField.getText().matches("[0-9]+")) {
-                if (!seasonField.getText().matches("0")) {
-                    int season = Integer.parseInt(seasonField.getText());
-                    season = season - 1;
-                    seasonField.setText(String.valueOf(season));
-                }
-            }
-        });
-    }
-
-    private void episodePlusButtonBehavior() {
-        episodePlusButton.addActionListener(e -> {
-            if (episodeField.getText().matches("[0-9]+")) {
-                int episode = Integer.parseInt(episodeField.getText());
-                episode = episode + 1;
-                episodeField.setText(String.valueOf(episode));
-            }
-        });
-    }
-
-    private void episodeMinusButtonBehavior() {
-        episodeMinusButton.addActionListener(e -> {
-            if (episodeField.getText().matches("[0-9]+")) {
-                if (!episodeField.getText().matches("0")) {
-                    int episode = Integer.parseInt(episodeField.getText());
-                    episode = episode - 1;
-                    episodeField.setText(String.valueOf(episode));
-                }
-            }
-        });
-    }
-
-    private void saveButtonBehavior() {
-        saveButton.setPreferredSize(new Dimension((int) panelInfo.getPreferredSize().getWidth() / 6, (int) panelInfo.getPreferredSize().getHeight() / 12));
-        saveButton.addActionListener(e -> {
-            if(model.getRowCount() != 0){
-                if(table.getSelectedRow() != -1){
-                    ShowInfo show = showInfoArrayList.get(table.getSelectedRow());
-                    show.title = titleField.getText();
-                    show.season = Integer.parseInt(seasonField.getText());
-                    show.episode = Integer.parseInt(episodeField.getText());
-                    table.updateUI();
-                }
-            }
-        });
-    }
-
-    private void cancelButtonBehavior() {
-        cancelButton.setPreferredSize(new Dimension((int) panelInfo.getPreferredSize().getWidth() / 6, (int) panelInfo.getPreferredSize().getHeight() / 12));
-
-        cancelButton.addActionListener(e -> {
-            if (model.getRowCount() != 0) {
-                if(table.getSelectedRow() != -1){
-                    ShowInfo temp = showInfoArrayList.get(table.getSelectedRow());
-                    titleField.setText(temp.getTitle());
-                    seasonField.setText(String.valueOf(temp.getSeason()));
-                    episodeField.setText(String.valueOf(temp.getEpisode()));
-                }
-            }
-        });
-    }
-
-    private void deleteButtonBehavior() {
-        deleteButton.setPreferredSize(new Dimension((int) panelInfo.getPreferredSize().getWidth() / 6, (int) panelInfo.getPreferredSize().getHeight() / 12));
-
-        deleteButton.addActionListener(e -> {
-            if (model.getRowCount() != 0) {
-                if(table.getSelectedRow() != -1){
-                    int choice = JOptionPane.showConfirmDialog(null, "Are you sure you would like to delete this show?", "Delete Show", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-                    if (choice == 0) {
-                        int index = table.getSelectedRow();
-                        showInfoArrayList.remove(index);
-                        model.removeRow(index);
-                    }
-                }
-            }
-        });
-    }
-
-    private void addButtonBehavior() {
-        addButton.addActionListener(e -> {
-            ShowInfo show = new ShowInfo();
-            show.setTitle("Season");
-            showInfoArrayList.add(show);
-            int size = showInfoArrayList.size();
-            model.addRow(new ShowInfo[]{showInfoArrayList.get(size - 1)});
-            table.changeSelection(model.getRowCount() - 1, 1, false, false);
-        });
-    }
 
     private void addToPanelList() {
         panelList.setBorder(new LineBorder(Color.BLACK));
@@ -368,7 +254,7 @@ public class GUI {
 
         c.gridy = 2;
         c.weighty = 0.05;
-        panelList.add(addButton, c);
+        panelList.add(buttons.addButton, c);
     }
 
     private void addToPanelInfo() {
@@ -390,9 +276,9 @@ public class GUI {
         c.gridx = 1;
         panelInfo.add(seasonField, c);
         c.gridx = 2;
-        panelInfo.add(seasonPlusButton, c);
+        panelInfo.add(buttons.episodePlusButton, c);
         c.gridx = 3;
-        panelInfo.add(seasonMinusButton, c);
+        panelInfo.add(buttons.seasonMinusButton, c);
 
         c.gridy = 2;
         c.gridx = 0;
@@ -400,19 +286,19 @@ public class GUI {
         c.gridx = 1;
         panelInfo.add(episodeField, c);
         c.gridx = 2;
-        panelInfo.add(episodePlusButton, c);
+        panelInfo.add(buttons.episodePlusButton, c);
         c.gridx = 3;
-        panelInfo.add(episodeMinusButton, c);
+        panelInfo.add(buttons.episodeMinusButton, c);
 
         c.gridwidth = 2;
         c.gridy = 3;
         c.gridx = 0;
-        panelInfo.add(saveButton, c);
+        panelInfo.add(buttons.saveButton, c);
         c.gridwidth = 1;
         c.gridx = 1;
-        panelInfo.add(cancelButton, c);
+        panelInfo.add(buttons.cancelButton, c);
         c.gridx = 2;
-        panelInfo.add(deleteButton, c);
+        panelInfo.add(buttons.deleteButton, c);
     }
 
     private void addShowToTable(ShowInfo show) {
