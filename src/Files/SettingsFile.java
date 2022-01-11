@@ -6,10 +6,10 @@ import java.io.*;
 
 public class SettingsFile {
 
-    private final File DOCS_DIRECTORY = new File(FileSystemView.getFileSystemView().getDefaultDirectory().getAbsolutePath());
-    private final File ROOT_FOLDER = new File(DOCS_DIRECTORY+"\\Scavables");
-    private final File SHOWS_FOLDER = new File(ROOT_FOLDER+"\\Shows");
-    private final File settingsFile = new File(SHOWS_FOLDER+"\\settings.txt");
+    private static final File DOCS_DIRECTORY = new File(FileSystemView.getFileSystemView().getDefaultDirectory().getAbsolutePath());
+    private static final File ROOT_FOLDER = new File(DOCS_DIRECTORY+"\\Scavables");
+    private static final File SHOWS_FOLDER = new File(ROOT_FOLDER+"\\Shows");
+    private static final File settingsFile = new File(SHOWS_FOLDER+"\\settings.txt");
 
     public SettingsFile(){
         if(!SHOWS_FOLDER.exists()){
@@ -20,7 +20,7 @@ public class SettingsFile {
 
     }
 
-    public void writeFrameSize(Dimension size){
+    public static void writeFrameSize(Dimension size){
         try {
             if(!settingsFile.exists()){
                 if(settingsFile.createNewFile())
@@ -42,7 +42,7 @@ public class SettingsFile {
 
     }
 
-    public void writeFrameLocation(Point location){
+    public static void writeFrameLocation(Point location){
         try {
             FileWriter fw = new FileWriter(settingsFile, true);
             BufferedWriter bw = new BufferedWriter(fw);
@@ -56,7 +56,7 @@ public class SettingsFile {
         }
     }
 
-    public Dimension readFrameSize(){
+    public static Dimension readFrameSize(){
         int width = 0, height = 0;
         try {
             FileReader fr = new FileReader(settingsFile);
@@ -79,7 +79,7 @@ public class SettingsFile {
         return new Dimension(width, height);
     }
 
-    public Point readFrameLocation(){
+    public static Point readFrameLocation(){
         Point point = null;
         String[] points;
         try {

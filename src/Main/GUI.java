@@ -20,12 +20,13 @@ public class GUI {
     Files.SettingsFile settingsFile = new SettingsFile();
     Files.ShowsFile showsFile = new ShowsFile();
 
-    private final JFrame frame = new JFrame("Shows");
+    FrameBehavior frameBehavior;
+    //private final JFrame frame = new JFrame("Shows");
     private final JPanel panelList = new JPanel();
     private final JPanel panelInfo = new JPanel();
 
     JTextField searchBar = new JTextField("Search");
-    ArrayList<ShowInfo> showInfoArrayList;
+    static ArrayList<ShowInfo> showInfoArrayList;
 
     JTable table = new JTable(0, 1);
     DefaultTableModel model;
@@ -62,7 +63,7 @@ public class GUI {
 
         table.setRowSorter(sorter);
 
-        frame.setName("Frame");
+        //frame.setName("Frame");
         panelList.setName("List");
         panelInfo.setName("Info");
         searchBar.setName("Search Bar");
@@ -72,7 +73,8 @@ public class GUI {
         deleteButton.setName("Delete Button");
         addButton.setName("Add Button");
 
-        frameBehavior();
+        frameBehavior = new FrameBehavior();
+        //frameBehavior();
         panelListBehavior();
         panelInfoBehavior();
         searchBarBehavior();
@@ -103,7 +105,7 @@ public class GUI {
 
     }
 
-    private void frameBehavior() {
+    /*private void frameBehavior() {
 
         //Frame size
         Dimension size = settingsFile.readFrameSize();
@@ -140,15 +142,16 @@ public class GUI {
             }
         });
 
-    }
+    }*/
 
     private void panelInfoBehavior() {
-        panelInfo.setPreferredSize(new Dimension((int) (frame.getContentPane().getWidth() * 0.8), frame.getContentPane().getHeight()));
+        panelInfo.setPreferredSize(new Dimension((int) (frameBehavior.frame.getContentPane().getWidth() * 0.8), frameBehavior.frame.getContentPane().getHeight()));
         panelInfo.setBackground(Color.LIGHT_GRAY);
     }
 
     private void panelListBehavior() {
-        panelList.setPreferredSize(new Dimension((int) (frame.getContentPane().getWidth() * 0.2), frame.getContentPane().getHeight()));
+        panelList.setPreferredSize(new Dimension((int) (frameBehavior.frame.getContentPane().getWidth() * 0.2), frameBehavior.frame.getContentPane().getHeight()));
+
     }
 
     private void searchBarBehavior() {
@@ -395,16 +398,16 @@ public class GUI {
     }
 
     private void addToFrame() {
-        frame.getContentPane().setLayout(new GridBagLayout());
+        frameBehavior.frame.getContentPane().setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
 
         constraints.gridx = 0;
         constraints.weighty = 1;
-        frame.getContentPane().add(panelList, constraints);
+        frameBehavior.frame.getContentPane().add(panelList, constraints);
 
         constraints.gridx = 1;
         constraints.weightx = 3;
-        frame.getContentPane().add(panelInfo, constraints);
+        frameBehavior.frame.getContentPane().add(panelInfo, constraints);
     }
 
     private void addToPanelList() {

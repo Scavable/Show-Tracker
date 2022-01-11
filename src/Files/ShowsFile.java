@@ -8,10 +8,10 @@ import java.util.ArrayList;
 
 public class ShowsFile {
 
-    private final File DOCS_DIRECTORY = new File(FileSystemView.getFileSystemView().getDefaultDirectory().getAbsolutePath());
-    private final File ROOT_FOLDER = new File(DOCS_DIRECTORY+"\\Scavables");
-    private final File SHOWS_FOLDER = new File(ROOT_FOLDER+"\\Shows");
-    File showsFile = new File(SHOWS_FOLDER + "\\shows.txt");
+    private static final File DOCS_DIRECTORY = new File(FileSystemView.getFileSystemView().getDefaultDirectory().getAbsolutePath());
+    private static final File ROOT_FOLDER = new File(DOCS_DIRECTORY+"\\Scavables");
+    private static final File SHOWS_FOLDER = new File(ROOT_FOLDER+"\\Shows");
+    static File showsFile = new File(SHOWS_FOLDER + "\\shows.txt");
 
     public ShowsFile(){
         if(!SHOWS_FOLDER.exists()){
@@ -20,7 +20,7 @@ public class ShowsFile {
             }
         }
     }
-    public void writeToFile(ArrayList<ShowInfo> info){
+    public static void writeToFile(ArrayList<ShowInfo> info){
 
         try {
             FileWriter fw = new FileWriter(showsFile);
@@ -35,7 +35,7 @@ public class ShowsFile {
             e.printStackTrace();
         }
     }
-    public ArrayList<ShowInfo> readFile(){
+    public static ArrayList<ShowInfo> readFile(){
         ArrayList<ShowInfo> shows = new ArrayList<>();
         try{
             FileReader fr = new FileReader(showsFile);
