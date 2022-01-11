@@ -17,11 +17,7 @@ public class GUI {
         new GUI();
     }
 
-    Files.SettingsFile settingsFile = new SettingsFile();
-    Files.ShowsFile showsFile = new ShowsFile();
-
     FrameBehavior frameBehavior;
-    //private final JFrame frame = new JFrame("Shows");
     private final JPanel panelList = new JPanel();
     private final JPanel panelInfo = new JPanel();
 
@@ -62,8 +58,6 @@ public class GUI {
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         table.setRowSorter(sorter);
-
-        //frame.setName("Frame");
         panelList.setName("List");
         panelInfo.setName("Info");
         searchBar.setName("Search Bar");
@@ -74,7 +68,6 @@ public class GUI {
         addButton.setName("Add Button");
 
         frameBehavior = new FrameBehavior();
-        //frameBehavior();
         panelListBehavior();
         panelInfoBehavior();
         searchBarBehavior();
@@ -98,51 +91,12 @@ public class GUI {
         addToPanelList();
         addToPanelInfo();
 
-        showInfoArrayList = showsFile.readFile();
+        showInfoArrayList = ShowsFile.readFile();
         for (ShowInfo show : showInfoArrayList) {
             addShowToTable(show);
         }
 
     }
-
-    /*private void frameBehavior() {
-
-        //Frame size
-        Dimension size = settingsFile.readFrameSize();
-        if (size != null) {
-            frame.setPreferredSize(size);
-        } else {
-            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            int screenWidth = screenSize.width;
-            int screenHeight = screenSize.height;
-
-            frame.setPreferredSize(new Dimension(screenWidth / 2, screenHeight / 2));
-        }
-
-        frame.pack();
-
-        //Frame location
-        Point location = settingsFile.readFrameLocation();
-        if (location != null) {
-            frame.setLocation(location);
-        } else {
-            frame.setLocationRelativeTo(null);
-        }
-
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-
-        frame.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                settingsFile.writeFrameSize(frame.getSize());
-                settingsFile.writeFrameLocation(frame.getLocationOnScreen());
-                showsFile.writeToFile(showInfoArrayList);
-            }
-        });
-
-    }*/
 
     private void panelInfoBehavior() {
         panelInfo.setPreferredSize(new Dimension((int) (frameBehavior.frame.getContentPane().getWidth() * 0.8), frameBehavior.frame.getContentPane().getHeight()));
