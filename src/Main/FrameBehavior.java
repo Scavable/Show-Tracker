@@ -15,7 +15,7 @@ public class FrameBehavior {
     FrameBehavior(){
         //Frame size
         Dimension size = SettingsFile.readFrameSize();
-        if (size != null) {
+        if (size.width > 0 && size.height > 0) {
             frame.setPreferredSize(size);
         } else {
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
