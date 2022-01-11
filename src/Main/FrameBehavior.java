@@ -48,4 +48,17 @@ public class FrameBehavior {
             }
         });
     }
+
+    void addToFrame(Component panelList, Component panelInfo){
+        frame.getContentPane().setLayout(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
+
+        constraints.gridx = 0;
+        constraints.weighty = 1;
+        frame.getContentPane().add(panelList, constraints);
+
+        constraints.gridx = 1;
+        constraints.weightx = 3;
+        frame.getContentPane().add(panelInfo, constraints);
+    }
 }

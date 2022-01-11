@@ -87,7 +87,7 @@ public class GUI {
         deleteButtonBehavior();
         addButtonBehavior();
 
-        addToFrame();
+        frameBehavior.addToFrame(panelList, panelInfo);
         addToPanelList();
         addToPanelInfo();
 
@@ -349,19 +349,6 @@ public class GUI {
             model.addRow(new ShowInfo[]{showInfoArrayList.get(size - 1)});
             table.changeSelection(model.getRowCount() - 1, 1, false, false);
         });
-    }
-
-    private void addToFrame() {
-        frameBehavior.frame.getContentPane().setLayout(new GridBagLayout());
-        GridBagConstraints constraints = new GridBagConstraints();
-
-        constraints.gridx = 0;
-        constraints.weighty = 1;
-        frameBehavior.frame.getContentPane().add(panelList, constraints);
-
-        constraints.gridx = 1;
-        constraints.weightx = 3;
-        frameBehavior.frame.getContentPane().add(panelInfo, constraints);
     }
 
     private void addToPanelList() {
