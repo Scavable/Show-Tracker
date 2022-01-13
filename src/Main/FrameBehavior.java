@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.EventListener;
 
 public class FrameBehavior {
 
@@ -19,11 +20,9 @@ public class FrameBehavior {
         Point location = SettingsFile.readFrameLocation();
         setFrameLocation(location);
 
-
         frame.pack();
         setFrameVisibility(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
 
         frame.addWindowListener(new WindowAdapter() {
             @Override
