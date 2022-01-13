@@ -18,16 +18,19 @@ public class GUI {
 
     FrameBehavior frameBehavior;
     ButtonBehaviors buttons;
+    JTableBehavior table;
+
+
     private final JPanel panelList = new JPanel();
     private final JPanel panelInfo = new JPanel();
 
     JTextField searchBar = new JTextField("Search");
     static ArrayList<ShowInfo> showInfoArrayList;
 
-    JTable table = new JTable(0, 1);
-    DefaultTableModel model;
-    ListSelectionModel selectionModel = table.getSelectionModel();
-    TableRowSorter<DefaultTableModel> sorter;
+    //JTable table = new JTable(0, 1);
+    //DefaultTableModel model;
+    //ListSelectionModel selectionModel = table.getSelectionModel();
+    //TableRowSorter<DefaultTableModel> sorter;
 
     public JLabel titleLabel = new JLabel("Title");
     public JLabel seasonLabel = new JLabel("Season");
@@ -40,33 +43,19 @@ public class GUI {
         //Populate shows array
         showInfoArrayList = ShowsFile.readFile();
 
-        //JTable stuff
-        model = new DefaultTableModel(0, 1) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-
-                return false;
-            }
-        };
-
-        table.setModel(model);
-        sorter = new TableRowSorter<>(model);
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        table.setRowSorter(sorter);
+        table = new JTableBehavior(titleField, seasonField, episodeField);
 
         //Set names
         panelList.setName("List");
         panelInfo.setName("Info");
         searchBar.setName("Search Bar");
-        table.setName("Shows Table");
 
         //Behaviors/init
         frameBehavior = new FrameBehavior();
         panelListBehavior();
         panelInfoBehavior();
-        buttons = new ButtonBehaviors(titleField, seasonField, episodeField, panelInfo, table, model, showInfoArrayList);
+        buttons = new ButtonBehaviors(titleField, seasonField, episodeField, panelInfo, table.table, table.model, showInfoArrayList);
         searchBarBehavior();
-        showsTableBehavior();
         titleLabelBehavior();
         titleFieldBehavior();
         seasonLabelBehavior();
@@ -106,9 +95,9 @@ public class GUI {
                     @Override
                     public void keyReleased(KeyEvent e) {
                         if(searchBar.getText().isBlank()){
-                            sorter.setRowFilter(null);
+                            table.sorter.setRowFilter(null);
                         }else{
-                            sorter.setRowFilter(RowFilter.regexFilter(searchBar.getText()));
+                            table.sorter.setRowFilter(RowFilter.regexFilter(searchBar.getText()));
                         }
                     }
                 });
@@ -119,19 +108,6 @@ public class GUI {
                 if(searchBar.getText().isBlank()){
                     searchBar.setText("Search");
                 }
-            }
-        });
-    }
-
-    private void showsTableBehavior() {
-        table.setBorder(new LineBorder(Color.BLACK));
-
-        selectionModel.addListSelectionListener(e -> {
-            if (table.getSelectedRow() != -1) {
-                ShowInfo show = (ShowInfo) model.getValueAt(table.getSelectedRow(), 0);
-                titleField.setText(show.title);
-                seasonField.setText(String.valueOf(show.season));
-                episodeField.setText(String.valueOf(show.episode));
             }
         });
     }
@@ -250,7 +226,7 @@ public class GUI {
         c.gridy = 1;
         c.weighty = 1;
         c.weightx = 1;
-        panelList.add(table, c);
+        panelList.add(table.table, c);
 
         c.gridy = 2;
         c.weighty = 0.05;
@@ -303,7 +279,7 @@ public class GUI {
 
     private void addShowToTable(ShowInfo show) {
         if (show.getTitle() != null) {
-            model.addRow(new ShowInfo[]{show});
+            table.model.addRow(new ShowInfo[]{show});
         }
     }
 }

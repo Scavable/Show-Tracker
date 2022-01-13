@@ -23,6 +23,7 @@ public class ButtonBehaviors {
     ArrayList<ShowInfo> showInfoArrayList;
 
     ButtonBehaviors(JTextField titleField, JTextField seasonField, JTextField episodeField, JPanel panelInfo, JTable table, DefaultTableModel model, ArrayList<ShowInfo> showInfoArrayList){
+
         this.showInfoArrayList = showInfoArrayList;
         this.titleField = titleField;
         this.seasonField = seasonField;
