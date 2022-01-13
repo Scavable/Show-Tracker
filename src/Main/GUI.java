@@ -4,10 +4,11 @@ import Files.ShowsFile;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableRowSorter;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 public class GUI {
@@ -26,11 +27,6 @@ public class GUI {
 
     JTextField searchBar = new JTextField("Search");
     static ArrayList<ShowInfo> showInfoArrayList;
-
-    //JTable table = new JTable(0, 1);
-    //DefaultTableModel model;
-    //ListSelectionModel selectionModel = table.getSelectionModel();
-    //TableRowSorter<DefaultTableModel> sorter;
 
     public JLabel titleLabel = new JLabel("Title");
     public JLabel seasonLabel = new JLabel("Season");
