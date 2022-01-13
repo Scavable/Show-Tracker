@@ -13,30 +13,16 @@ public class FrameBehavior {
     public final JFrame frame = new JFrame("Shows");
 
     FrameBehavior(){
-        //Frame size
         Dimension size = SettingsFile.readFrameSize();
-        if (size.width > 0 && size.height > 0) {
-            frame.setPreferredSize(size);
-        } else {
-            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            int screenWidth = screenSize.width;
-            int screenHeight = screenSize.height;
+        setFrameSize(size);
 
-            frame.setPreferredSize(new Dimension(screenWidth / 2, screenHeight / 2));
-        }
+        Point location = SettingsFile.readFrameLocation();
+        setFrameLocation(location);
+
 
         frame.pack();
-
-        //Frame location
-        Point location = SettingsFile.readFrameLocation();
-        if (location != null) {
-            frame.setLocation(location);
-        } else {
-            frame.setLocationRelativeTo(null);
-        }
-
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setFrameVisibility(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
         frame.addWindowListener(new WindowAdapter() {
@@ -47,6 +33,38 @@ public class FrameBehavior {
                 ShowsFile.writeToFile(GUI.showInfoArrayList);
             }
         });
+    }
+
+    void setFrameSize(Dimension size){
+        if (size.width > 0 && size.height > 0) {
+            frame.setPreferredSize(size);
+        } else {
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            int screenWidth = screenSize.width;
+            int screenHeight = screenSize.height;
+
+            frame.setPreferredSize(new Dimension(screenWidth / 2, screenHeight / 2));
+        }
+    }
+
+    void setFrameSize(int width, int height){
+
+    }
+
+    void setFrameLocation(Point location){
+        if (location != null) {
+            frame.setLocation(location);
+        } else {
+            frame.setLocationRelativeTo(null);
+        }
+    }
+
+    void setFrameVisibility(Boolean status){
+        frame.setVisible(status);
+    }
+
+    void setDefaultCloseOperation(int closeOperation){
+        frame.setDefaultCloseOperation(closeOperation);
     }
 
     void addToFrame(Component panelList, Component panelInfo){
