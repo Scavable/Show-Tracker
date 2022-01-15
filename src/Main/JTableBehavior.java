@@ -23,16 +23,20 @@ public class JTableBehavior {
 
         createNotEditableDefaultTableModel();
 
-        setTableModel(model);
         sorter = new TableRowSorter<>(model);
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        table.setRowSorter(sorter);
 
+        setTableModel(model);
+        setRowSorter(sorter);
+        setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         setTableName("Shows Table");
-
-        table.setBorder(new LineBorder(Color.BLACK));
         selectionModelListener();
 
+        table.setBorder(new LineBorder(Color.BLACK));
+
+    }
+
+    private void setSelectionMode(int selectionMode) {
+        table.setSelectionMode(selectionMode);
     }
 
     void setTableName(String name){
@@ -41,6 +45,10 @@ public class JTableBehavior {
 
     void setTableModel(TableModel model){
         table.setModel(model);
+    }
+
+    void setRowSorter(TableRowSorter<DefaultTableModel> sorter){
+        table.setRowSorter(sorter);
     }
 
     void createNotEditableDefaultTableModel(){
