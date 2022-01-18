@@ -26,7 +26,7 @@ public class ShowsFile {
             FileWriter fw = new FileWriter(showsFile);
             BufferedWriter bw = new BufferedWriter(fw);
             for(ShowInfo show : info){
-                bw.write(show.title + ", " + show.season + ", " + show.episode);
+                bw.write(show.title + ", " + show.season + ", " + show.episode + ", " + show.time);
                 bw.newLine();
             }
             bw.close();
@@ -45,7 +45,10 @@ public class ShowsFile {
                 str[0] = str[0].trim();
                 str[1] = str[1].trim();
                 str[2] = str[2].trim();
-                shows.add(new ShowInfo(str[0], Integer.parseInt(str[1]), Integer.parseInt(str[2])));
+                str[3] = str[3].trim();
+                System.out.println(str[3]);
+                shows.add(new ShowInfo(str[0], Integer.parseInt(str[1]), Integer.parseInt(str[2]), str[3]));
+
             }
 
         }catch (IOException e){

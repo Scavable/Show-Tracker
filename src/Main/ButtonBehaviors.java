@@ -16,18 +16,19 @@ public class ButtonBehaviors {
     JButton deleteButton = new JButton("Delete");
     JButton addButton = new JButton("Add");
 
-    JTextField titleField, seasonField, episodeField;
+    JTextField titleField, seasonField, episodeField, episodeTimeField;
     JTable table;
     DefaultTableModel model;
     JPanel panelInfo;
     ArrayList<ShowInfo> showInfoArrayList;
 
-    ButtonBehaviors(JTextField titleField, JTextField seasonField, JTextField episodeField, JPanel panelInfo, JTable table, DefaultTableModel model, ArrayList<ShowInfo> showInfoArrayList){
+    ButtonBehaviors(JTextField titleField, JTextField seasonField, JTextField episodeField, JTextField episodeTimeField, JPanel panelInfo, JTable table, DefaultTableModel model, ArrayList<ShowInfo> showInfoArrayList){
 
         this.showInfoArrayList = showInfoArrayList;
         this.titleField = titleField;
         this.seasonField = seasonField;
         this.episodeField = episodeField;
+        this.episodeTimeField = episodeTimeField;
         this.panelInfo = panelInfo;
         this.table = table;
         this.model = model;
@@ -98,6 +99,7 @@ public class ButtonBehaviors {
                     show.title = titleField.getText();
                     show.season = Integer.parseInt(seasonField.getText());
                     show.episode = Integer.parseInt(episodeField.getText());
+                    show.time = episodeTimeField.getText();
                     table.updateUI();
                 }
             }
@@ -115,6 +117,7 @@ public class ButtonBehaviors {
                     titleField.setText(temp.getTitle());
                     seasonField.setText(String.valueOf(temp.getSeason()));
                     episodeField.setText(String.valueOf(temp.getEpisode()));
+                    episodeTimeField.setText(temp.getTime());
                 }
             }
         });

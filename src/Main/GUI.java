@@ -5,10 +5,7 @@ import Files.ShowsFile;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 public class GUI {
@@ -35,11 +32,14 @@ public class GUI {
     public JTextField seasonField = new JTextField("Season");
     public JTextField episodeField = new JTextField("Episode");
 
+    public JLabel episodeTimeLabel = new JLabel("Episode Length");
+    public JTextField episodeTimeField = new JTextField("hh:mm:ss");
+
     GUI() {
         //Populate shows array
         showInfoArrayList = ShowsFile.readFile();
 
-        table = new JTableBehavior(titleField, seasonField, episodeField);
+        table = new JTableBehavior(titleField, seasonField, episodeField, episodeTimeField);
 
         //Set names
         panelList.setName("List");
@@ -50,7 +50,7 @@ public class GUI {
         frameBehavior = new FrameBehavior();
         panelListBehavior();
         panelInfoBehavior();
-        buttons = new ButtonBehaviors(titleField, seasonField, episodeField, panelInfo, table.table, table.model, showInfoArrayList);
+        buttons = new ButtonBehaviors(titleField, seasonField, episodeField, episodeTimeField, panelInfo, table.table, table.model, showInfoArrayList);
         searchBarBehavior();
         titleLabelBehavior();
         titleFieldBehavior();
@@ -58,15 +58,61 @@ public class GUI {
         seasonFieldBehavior();
         episodeLabelBehavior();
         episodeFieldBehavior();
+        episodeTimeLabelBehavior();
+        episodeTimeFieldBehavior();
 
         frameBehavior.addToFrame(panelList, panelInfo);
         addToPanelList();
         addToPanelInfo();
 
         for (ShowInfo show : showInfoArrayList) {
+            System.out.println(show.time);
             addShowToTable(show);
         }
 
+    }
+
+    private void episodeTimeLabelBehavior() {
+        episodeTimeLabel.setPreferredSize(new Dimension((int) panelInfo.getPreferredSize().getWidth() / 3, (int) panelInfo.getPreferredSize().getHeight() / 10));
+        String font = episodeTimeLabel.getFont().getFontName();
+        int style = episodeTimeLabel.getFont().getStyle();
+        int size = episodeTimeLabel.getFont().getSize();
+        size = 20;
+        episodeTimeLabel.setFont(new Font(font, style, size));
+    }
+
+    private void episodeTimeFieldBehavior() {
+        episodeTimeField.setPreferredSize(new Dimension((int) panelInfo.getPreferredSize().getWidth() / 3, (int) panelInfo.getPreferredSize().getHeight() / 12));
+
+        String font = episodeTimeField.getFont().getFontName();
+        int style = episodeTimeField.getFont().getStyle();
+        int size = episodeTimeField.getFont().getSize();
+        size = 20;
+        episodeTimeField.setFont(new Font(font, style, size));
+
+        episodeTimeField.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                episodeTimeField.addKeyListener(new KeyAdapter() {
+                    String temp = episodeTimeField.getText();
+
+                    @Override
+                    public void keyReleased(KeyEvent e) {
+                        if (!(e.getKeyCode() >= KeyEvent.VK_0 && e.getKeyCode() <= KeyEvent.VK_9) && !(e.getKeyCode() >= KeyEvent.VK_NUMPAD0 && e.getKeyCode() <= KeyEvent.VK_NUMPAD9) && !(e.getKeyCode() == KeyEvent.VK_BACK_SPACE))
+                            episodeTimeField.setText(temp);
+
+                        temp = episodeTimeField.getText();
+                    }
+                });
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if(episodeTimeField.getText().isBlank()){
+                    episodeTimeField.setText("0");
+                }
+            }
+        });
     }
 
     private void panelInfoBehavior() {
@@ -262,8 +308,14 @@ public class GUI {
         c.gridx = 3;
         panelInfo.add(buttons.episodeMinusButton, c);
 
-        c.gridwidth = 2;
         c.gridy = 3;
+        c.gridx = 0;
+        panelInfo.add(episodeTimeLabel, c);
+        c.gridx = 1;
+        panelInfo.add(episodeTimeField, c);
+
+        c.gridwidth = 2;
+        c.gridy = 4;
         c.gridx = 0;
         panelInfo.add(buttons.saveButton, c);
         c.gridwidth = 1;

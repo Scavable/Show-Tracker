@@ -14,12 +14,13 @@ public class JTableBehavior {
     ListSelectionModel selectionModel = table.getSelectionModel();
     TableRowSorter<DefaultTableModel> sorter;
 
-    JTextField titleField, seasonField, episodeField;
+    JTextField titleField, seasonField, episodeField, episodeTimeField;
 
-    JTableBehavior(JTextField titleField, JTextField seasonField, JTextField episodeField){
+    JTableBehavior(JTextField titleField, JTextField seasonField, JTextField episodeField, JTextField episodeTimeField){
         this.titleField = titleField;
         this.seasonField = seasonField;
         this.episodeField = episodeField;
+        this.episodeTimeField = episodeTimeField;
 
         createNotEditableDefaultTableModel();
 
@@ -68,6 +69,7 @@ public class JTableBehavior {
                 titleField.setText(show.title);
                 seasonField.setText(String.valueOf(show.season));
                 episodeField.setText(String.valueOf(show.episode));
+                episodeTimeField.setText(show.time);
             }
         });
     }

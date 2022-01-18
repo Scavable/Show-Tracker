@@ -2,13 +2,14 @@ package Main;
 
 public class ShowInfo {
 
-    public String title;
+    public String title, time;
     public int episode, season;
 
     public ShowInfo(){
         title = null;
         season = 0;
         episode = 0;
+        time = "0";
     }
 
     ShowInfo(String title, int episode){
@@ -16,10 +17,11 @@ public class ShowInfo {
         this.episode = episode;
     }
 
-    public ShowInfo(String title, int season, int episode){
+    public ShowInfo(String title, int season, int episode, String time){
         this.title = title;
         this.season = season;
         this.episode = episode;
+        this.time = time;
     }
 
     public String getTitle() {
@@ -32,6 +34,10 @@ public class ShowInfo {
 
     public int getEpisode() {
         return episode;
+    }
+
+    public String getTime() {
+        return time;
     }
 
     public void setTitle(String title) {
