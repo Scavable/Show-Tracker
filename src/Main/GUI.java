@@ -17,38 +17,37 @@ public class GUI {
     FrameBehavior frameBehavior;
     ButtonBehaviors buttons;
     JTableBehavior table;
+    PanelListBehavior panelListBehavior;
 
 
-    private final JPanel panelList = new JPanel();
     private final JPanel panelInfo = new JPanel();
 
-    JTextField searchBar = new JTextField("Search");
+    private final JTextField searchBar = new JTextField("Search");
     static ArrayList<ShowInfo> showInfoArrayList;
 
-    public JLabel titleLabel = new JLabel("Title");
-    public JLabel seasonLabel = new JLabel("Season");
-    public JLabel episodeLabel = new JLabel("Episode");
-    public JTextField titleField = new JTextField("Title");
-    public JTextField seasonField = new JTextField("Season");
-    public JTextField episodeField = new JTextField("Episode");
+    private final JLabel titleLabel = new JLabel("Title");
+    private final JLabel seasonLabel = new JLabel("Season");
+    private final JLabel episodeLabel = new JLabel("Episode");
+    private final JTextField titleField = new JTextField("Title");
+    private final JTextField seasonField = new JTextField("Season");
+    private final JTextField episodeField = new JTextField("Episode");
 
-    public JLabel episodeTimeLabel = new JLabel("Episode Length");
-    public JTextField episodeTimeField = new JTextField("hh:mm:ss");
+    private final JLabel episodeTimeLabel = new JLabel("Episode Length");
+    private final JTextField episodeTimeField = new JTextField("hh:mm:ss");
 
     GUI() {
-        //Populate shows array
+        //Populate shows arraylist
         showInfoArrayList = ShowsFile.readFile();
 
         table = new JTableBehavior(titleField, seasonField, episodeField, episodeTimeField);
 
         //Set names
-        panelList.setName("List");
         panelInfo.setName("Info");
         searchBar.setName("Search Bar");
 
         //Behaviors/init
         frameBehavior = new FrameBehavior();
-        panelListBehavior();
+        panelListBehavior = new PanelListBehavior(frameBehavior.frame);
         panelInfoBehavior();
         buttons = new ButtonBehaviors(titleField, seasonField, episodeField, episodeTimeField, panelInfo, table.table, table.model, showInfoArrayList);
         searchBarBehavior();
@@ -61,8 +60,8 @@ public class GUI {
         episodeTimeLabelBehavior();
         episodeTimeFieldBehavior();
 
-        frameBehavior.addToFrame(panelList, panelInfo);
-        addToPanelList();
+        frameBehavior.addToFrame(panelListBehavior.panelList, panelInfo);
+        panelListBehavior.addToPanelList(searchBar, table.table, buttons.addButton);
         addToPanelInfo();
 
         for (ShowInfo show : showInfoArrayList) {
@@ -119,13 +118,8 @@ public class GUI {
         panelInfo.setBackground(Color.LIGHT_GRAY);
     }
 
-    private void panelListBehavior() {
-        panelList.setPreferredSize(new Dimension((int) (frameBehavior.frame.getContentPane().getWidth() * 0.2), frameBehavior.frame.getContentPane().getHeight()));
-
-    }
-
     private void searchBarBehavior() {
-        searchBar.setPreferredSize(new Dimension((int) panelList.getPreferredSize().getWidth() - 2, (int) (panelList.getPreferredSize().getHeight() * 0.05)));
+        searchBar.setPreferredSize(new Dimension((int) panelListBehavior.panelList.getPreferredSize().getWidth() - 2, (int) (panelListBehavior.panelList.getPreferredSize().getHeight() * 0.05)));
 
         searchBar.addFocusListener(new FocusAdapter() {
 
@@ -250,28 +244,6 @@ public class GUI {
                 });
             }
         });
-    }
-
-
-
-    private void addToPanelList() {
-        panelList.setBorder(new LineBorder(Color.BLACK));
-        panelList.setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-
-        c.gridx = 0;
-        c.gridy = 0;
-        panelList.add(searchBar, c);
-
-        c.fill = GridBagConstraints.BOTH;
-        c.gridy = 1;
-        c.weighty = 1;
-        c.weightx = 1;
-        panelList.add(table.table, c);
-
-        c.gridy = 2;
-        c.weighty = 0.05;
-        panelList.add(buttons.addButton, c);
     }
 
     private void addToPanelInfo() {
