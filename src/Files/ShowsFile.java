@@ -46,7 +46,6 @@ public class ShowsFile {
                 str[1] = str[1].trim();
                 str[2] = str[2].trim();
                 str[3] = str[3].trim();
-                System.out.println(str[3]);
                 shows.add(new ShowInfo(str[0], Integer.parseInt(str[1]), Integer.parseInt(str[2]), str[3]));
 
             }

@@ -31,6 +31,7 @@ public class FrameBehavior {
                 ShowsFile.writeToFile(GUI.showInfoArrayList);
             }
         });
+
     }
 
     void setFrameSize(Dimension size){

@@ -66,7 +66,6 @@ public class GUI {
         addToPanelInfo();
 
         for (ShowInfo show : showInfoArrayList) {
-            System.out.println(show.time);
             addShowToTable(show);
         }
 
@@ -294,7 +293,7 @@ public class GUI {
         c.gridx = 1;
         panelInfo.add(seasonField, c);
         c.gridx = 2;
-        panelInfo.add(buttons.episodePlusButton, c);
+        panelInfo.add(buttons.seasonPlusButton, c);
         c.gridx = 3;
         panelInfo.add(buttons.seasonMinusButton, c);
 
